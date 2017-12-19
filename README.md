@@ -16,11 +16,18 @@ let base = db.temp.find()
 
 ### Agora mande executar um map para criarmos a nova coleção padronizada
 ```javascript
+//executa o map no resultado do find
 base.map(el => {
+	//transforma o valor reembolsado em Number
 	el.VALOR_REEMBOLSADO = Number(el.VALOR_REEMBOLSADO.replace(",","."));
+	//atribui uma função de padronização à DATA
  	el.DATA = (d => {
+		//padroniza a data no formato mm/dd/yyyy para transformarmos em date
  		return new Date(d[1]+"/"+d[0]+"/"+d[2]);
- 	})(el.DATA.split("/"));
+	 })
+	 //auto executa a função passando como parametro de entrada um array contando a data
+	 (el.DATA.split("/"));
+	//insere o elemento padronizado no banco
  	db.reembolsos.insert(el)
 })
 ```
