@@ -67,6 +67,7 @@ db.reembolsos.aggregate(
 		//maior valor reembolsado
 		maiorValor:{$max:"$VALOR_REEMBOLSADO"}
 	}},
+	//ordena por ano/mes
 	{$sort:{"_id.ano":1,"_id.mes":1}}
 )
 ```
