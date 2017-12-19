@@ -6,7 +6,7 @@
 mongoimport -d senado -c temp --file senado2017.json
 ```
 
-### entre mongo
+### entre no mongo
 $mongo senado
 
 ### Agora salve a colection temporaria em uma variavel par padronizarmos a data e os valores R$
