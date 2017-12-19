@@ -33,7 +33,8 @@ base.map(el => {
 ```
 
 ### Corre pro abraço
-```
+
+```javascript
 db.reembolsos.aggregate(
 	//Retornar a media mensal de reembolsos do Senado
 	{$group:{
@@ -41,6 +42,8 @@ db.reembolsos.aggregate(
 		_id:{ano:{$year:"$DATA"}, mes:{$month:"$DATA"}},
 		//calcula a media de valor reembolsado
 		avgany:{$avg:"$VALOR_REEMBOLSADO"},
+		//Soma dos reembolsos
+		totalReembolsado:{$sum:"$VALOR_REEMBOLSADO"},
 		//insere em uma subcolection os reembolsos correspondentes a esta media
 		reembolsos:{$push:"$$ROOT"}}
 	},
@@ -49,7 +52,7 @@ db.reembolsos.aggregate(
 	//calcula o valor reembolsado por senador
 	{$group:{
 		//Agrupa os senadores para que possamos calcular os gastos deles por mes e ano, e mantenh a media mensal par amostragem
-		_id:{gastao:"$reembolsos.SENADOR",ano:"$_id.ano",mes:"$_id.mes",mediaMensal:"$avgany"},
+		_id:{gastao:"$reembolsos.SENADOR",ano:"$_id.ano",mes:"$_id.mes",mediaMensal:"$avgany", reembolsadoMes:"$totalReembolsado"},
 		//calcula o valor reembolsado por mês do safado
 		reembolso:{$sum:"$reembolsos.VALOR_REEMBOLSADO"}
 	}},
