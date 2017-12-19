@@ -31,8 +31,47 @@ base.map(el => {
  	db.reembolsos.insert(el)
 })
 ```
+### O que eu achei simplismente foooooddaaaaa foi a quantidade de reembolsos que esses caras pedem
+```javascript
+//Total reembolsado
+db.reembolsos.aggregate(
+	{$group:{
+		_id:false,
+		//Soma dos reembolsos
+		totalReembolsado:{$sum:"$VALOR_REEMBOLSADO"},
+		//media de valor reembolsado
+		mediaDeReembolso:{$avg:"$VALOR_REEMBOLSADO"},
+		//menor valor reembolsado
+		menorValor:{$min:"$VALOR_REEMBOLSADO"},
+		//maior valor reembolsado
+		maiorValor:{$max:"$VALOR_REEMBOLSADO"}
+	}}
+)
+```
+### Somente um reembolso no periodo de amostragem foi devolvido
+```javascript
+db.reembolsos.find({VALOR_REEMBOLSADO:{$lte:0}}).pretty()
+```
+### Observem que os reembolsos são muito altos por mês. Mas essa base tá duvidosa também, a sequência de anos não bate
+```javascript
+//reembolsos por mês
+db.reembolsos.aggregate(
+	{$group:{
+		_id:{ano:{$year:"$DATA"}, mes:{$month:"$DATA"}},
+		//Soma dos reembolsos
+		totalReembolsado:{$sum:"$VALOR_REEMBOLSADO"},
+		//media de valor reembolsado
+		mediaDeReembolso:{$avg:"$VALOR_REEMBOLSADO"},
+		//menor valor reembolsado
+		menorValor:{$min:"$VALOR_REEMBOLSADO"},
+		//maior valor reembolsado
+		maiorValor:{$max:"$VALOR_REEMBOLSADO"}
+	}},
+	{$sort:{"_id.ano":1,"_id.mes":1}}
+)
+```
 
-### Corre pro abraço
+### Reembolsos dos gastoes por mês
 
 ```javascript
 db.reembolsos.aggregate(
