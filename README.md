@@ -1,4 +1,4 @@
-#Exemplo de calculo da media de gastos do senado
+# Exemplo de calculo da media de gastos do senado
 - Fazer uma consulta contendo por ano/mês, o valor médio de gastos do mês (independente de senador) e somente os senadores que gastaram mais que a média naquele mês específico.
 
 ### primeiro importe os dados para uma coleção temporária
